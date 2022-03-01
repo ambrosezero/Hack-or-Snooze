@@ -85,8 +85,9 @@ class StoryList {
       }
     })
     return res
-
   }
+
+
 }
 
 
@@ -118,6 +119,21 @@ class User {
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
+  }
+
+  static async removeAllMyStories() {
+    storyList.stories.forEach(async story => {
+      if (story.username == currentUser.username) {
+        const res = await axios({
+          url: `${BASE_URL}/stories/${story.storyId}`,
+          method: 'DELETE',
+          data: {
+            token: currentUser.loginToken,
+          }
+        })
+        return res
+      }
+    });
   }
 
   static async addFavorite(user, storyId) {
