@@ -127,6 +127,17 @@ class User {
     this.loginToken = token;
   }
 
+  static async addFavorite(user, storyId) {
+    const res = await axios({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+      method: 'POST',
+      data: {
+        token: user.loginToken,
+      }
+    })
+    return res
+  }
+
   /** Register new user in API, make User instance & return it.
    *
    * - username: a new username
