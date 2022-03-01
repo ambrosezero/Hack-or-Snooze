@@ -76,13 +76,6 @@ class StoryList {
   static async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
 
-    // const res = await axios.post(`${BASE_URL}/stories`, {
-    //   token: user.loginToken,
-    //   story: newStory
-    // })
-    // return res
-
-
     const res = await axios({
       url: `${BASE_URL}/stories`,
       method: 'POST',
@@ -137,6 +130,18 @@ class User {
     })
     return res
   }
+
+  static async removeFavorite(user, storyId) {
+    const res = await axios({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+      method: 'DELETE',
+      data: {
+        token: user.loginToken,
+      }
+    })
+    return res
+  }
+
 
   /** Register new user in API, make User instance & return it.
    *

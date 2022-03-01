@@ -52,15 +52,19 @@ function putStoriesOnPage() {
 }
 
 
-$storyFormButton.on("click", function (e) {
+$storyFormButton.on("click", async function (e) {
   e.preventDefault()
   let newStory = {
     author: currentUser.username,
     title: $('#story-title').val(),
     url: $('#story-url').val()
   }
+  let addedStory = await StoryList.addStory(currentUser, newStory)
+  let addedStoryObject = new Story(addedStory.data.story)
 
-  StoryList.addStory(currentUser, newStory)
-  navAllStories()
-  $(start)
+  let $newStory = generateStoryMarkup(addedStoryObject)
+  $allStoriesList.prepend($newStory);
+  $storyForm.hide()
+  $allStoriesList.show()
+
 });
