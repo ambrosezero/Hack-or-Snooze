@@ -61,6 +61,17 @@ function putStoriesOnPage() {
       toggleStoryStar(story)
     }
     )
+    if (currentUser.ownStories.some((userStory) => { return userStory.storyId == story.storyId })) {
+      const $removeStoryButton = $('<span>').text('remove').attr({ id: `remove-${story.storyId}` })
+        .on('click', function () {
+          User.removeStory(story)
+          $story.remove()
+        })
+      $story.append($removeStoryButton)
+    }
+    console.log(currentUser)
+    // if(currentUser)
+
   }
 
   $allStoriesList.show();
@@ -105,13 +116,24 @@ $storyFormButton.on("click", async function (e) {
 
   let addedStory = await StoryList.addStory(currentUser, newStory)
   let addedStoryObject = new Story(addedStory.data.story)
+  // console.log()
+  // if (currentUser.ownStories.some((userStory) => { return userStory.storyId == addedStoryObject.storyId })) {
+  const $removeStoryButton = $('<span>').text('remove').attr({ id: `remove-${addedStoryObject.storyId}` })
+    .on('click', function () {
+      User.removeStory(addedStoryObject)
+      $newStory.remove()
+    })
+  // }
   let $newStory = generateStoryMarkup(addedStoryObject)
+  $newStory.append($removeStoryButton)
   $allStoriesList.prepend($newStory);
 
   $(`#story-star-${addedStoryObject.storyId}`).on('click', function () {
     toggleStoryStar(addedStoryObject)
   }
   )
+
+
   $storyForm.hide()
   $allStoriesList.show()
 

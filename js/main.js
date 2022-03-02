@@ -14,6 +14,7 @@ const $navStory = $('#nav-story')
 const $storyForm = $('#story-form')
 const $storyFormButton = $('#story-form button')
 
+const $navRemoveStory = $('#nav-remove-story')
 
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
@@ -21,6 +22,7 @@ const $navLogOut = $("#nav-logout");
 
 const fullStar = "checked"
 const emptyStar = "unchecked"
+
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After

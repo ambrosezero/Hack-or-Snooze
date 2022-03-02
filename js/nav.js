@@ -44,3 +44,11 @@ function navNewStoryClick(evt) {
 }
 
 $navStory.on('click', navNewStoryClick)
+
+// $navRemoveStory.on('click', function (e) {
+//   alert('click the story you wish to remove')
+//   $allStoriesList.on('click', function (e) {
+//     preventDefault()
+//     console.log(e)
+//   })
+// })

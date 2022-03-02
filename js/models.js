@@ -136,6 +136,17 @@ class User {
     });
   }
 
+  static async removeStory(story) {
+    const res = await axios({
+      url: `${BASE_URL}/stories/${story.storyId}`,
+      method: 'DELETE',
+      data: {
+        token: currentUser.loginToken,
+      }
+    })
+    return res
+  }
+
   static async addFavorite(user, storyId) {
     console.log(storyId)
     const res = await axios({
