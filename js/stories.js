@@ -58,24 +58,15 @@ function putStoriesOnPage() {
     $allStoriesList.append($story);
     // adds the toggleFavorite event listener to the story-star to change favorite state
     $(`#story-star-${story.storyId}`).on('click', function () {
-      let $thisStar = $(`#story-star-${story.storyId}`)
-      User.toggleFavorite(currentUser, story)
-      // toggles the UI favorite star with the favorite state
-      if (currentUser.favorites.some((favorite) => {
-        return favorite.storyId == story.storyId
-      })) {
-        $thisStar.addClass("unchecked").removeClass("checked")
-      }
-      else {
-        $thisStar.addClass("checked").removeClass("unchecked")
-      }
-    })
+      toggleStoryStar(story)
+    }
+    )
   }
 
   $allStoriesList.show();
 }
 
-let toggleStoryStar = function (story) {
+function toggleStoryStar(story) {
   let $thisStar = $(`#story-star-${story.storyId}`)
   User.toggleFavorite(currentUser, story)
   // toggles the UI favorite star with the favorite state
@@ -89,6 +80,20 @@ let toggleStoryStar = function (story) {
   }
 }
 
+// let toggleStoryStar = function (story) {
+//   let $thisStar = $(`#story-star-${story.storyId}`)
+//   User.toggleFavorite(currentUser, story)
+//   // toggles the UI favorite star with the favorite state
+//   if (currentUser.favorites.some((favorite) => {
+//     return favorite.storyId == story.storyId
+//   })) {
+//     $thisStar.addClass("unchecked").removeClass("checked")
+//   }
+//   else {
+//     $thisStar.addClass("checked").removeClass("unchecked")
+//   }
+// }
+
 
 $storyFormButton.on("click", async function (e) {
   e.preventDefault()
@@ -97,11 +102,16 @@ $storyFormButton.on("click", async function (e) {
     title: $('#story-title').val(),
     url: $('#story-url').val()
   }
+
   let addedStory = await StoryList.addStory(currentUser, newStory)
   let addedStoryObject = new Story(addedStory.data.story)
-
   let $newStory = generateStoryMarkup(addedStoryObject)
   $allStoriesList.prepend($newStory);
+
+  $(`#story-star-${addedStoryObject.storyId}`).on('click', function () {
+    toggleStoryStar(addedStoryObject)
+  }
+  )
   $storyForm.hide()
   $allStoriesList.show()
 
