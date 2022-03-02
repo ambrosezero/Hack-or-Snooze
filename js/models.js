@@ -137,6 +137,7 @@ class User {
   }
 
   static async addFavorite(user, storyId) {
+    console.log(storyId)
     const res = await axios({
       url: `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
       method: 'POST',
@@ -144,10 +145,12 @@ class User {
         token: user.loginToken,
       }
     })
+    currentUser.favorites = res.data.user.favorites
     return res
   }
 
   static async removeFavorite(user, storyId) {
+    console.log(storyId)
     const res = await axios({
       url: `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
       method: 'DELETE',
@@ -155,10 +158,21 @@ class User {
         token: user.loginToken,
       }
     })
+    currentUser.favorites = res.data.user.favorites
+
     return res
   }
 
-
+  static async toggleFavorite(user, story) {
+    console.log(story)
+    if (currentUser.favorites.some(favorite => {
+      return favorite.storyId == story.storyId
+    })) {
+      return await this.removeFavorite(user, story.storyId)
+    } else {
+      return await this.addFavorite(user, story.storyId)
+    }
+  }
   /** Register new user in API, make User instance & return it.
    *
    * - username: a new username

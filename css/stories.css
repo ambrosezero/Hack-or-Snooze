@@ -37,3 +37,13 @@
 .story-user {
   display: block;
 }
+
+.unchecked {
+/* content: "/2606" */
+color: black;
+}
+
+.checked {
+  color: orange;
+  /* content: "/2605"; */
+}
