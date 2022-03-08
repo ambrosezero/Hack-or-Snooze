@@ -37,6 +37,10 @@ function updateNavOnLogin() {
 
 
 function navNewStoryClick(evt) {
+  if (!currentUser) {
+    alert("sign in to submit stories");
+    return
+  }
   console.debug('navNewStoryClick', evt);
   hidePageComponents();
   $storyForm.show();
