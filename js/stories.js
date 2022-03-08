@@ -23,12 +23,14 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
   const hostName = story.getHostName();
   let storyStarClass;
-  if (currentUser.favorites.some(favorite => {
-    return favorite.storyId == story.storyId
-  })) {
-    storyStarClass = fullStar;
-  } else {
-    storyStarClass = emptyStar;
+  if (currentUser) {
+    if (currentUser.favorites.some(favorite => {
+      return favorite.storyId == story.storyId
+    })) {
+      storyStarClass = fullStar;
+    } else {
+      storyStarClass = emptyStar;
+    }
   }
   return $(`
       <li id="${story.storyId}">
@@ -58,16 +60,23 @@ function putStoriesOnPage() {
     $allStoriesList.append($story);
     // adds the toggleFavorite event listener to the story-star to change favorite state
     $(`#story-star-${story.storyId}`).on('click', function () {
-      toggleStoryStar(story)
+      if (currentUser) {
+        toggleStoryStar(story)
+      }
+      else {
+        alert("login to favorite stories!")
+      }
     }
     )
-    if (currentUser.ownStories.some((userStory) => { return userStory.storyId == story.storyId })) {
-      const $removeStoryButton = $('<span>').text('remove').attr({ id: `remove-${story.storyId}` })
-        .on('click', function () {
-          User.removeStory(story)
-          $story.remove()
-        })
-      $story.append($removeStoryButton)
+    if (currentUser) {
+      if (currentUser.ownStories.some((userStory) => { return userStory.storyId == story.storyId })) {
+        const $removeStoryButton = $('<span>').text('remove').attr({ id: `remove-${story.storyId}` })
+          .on('click', function () {
+            User.removeStory(story)
+            $story.remove()
+          })
+        $story.append($removeStoryButton)
+      }
     }
     console.log(currentUser)
     // if(currentUser)
@@ -107,6 +116,7 @@ function toggleStoryStar(story) {
 
 
 $storyFormButton.on("click", async function (e) {
+
   e.preventDefault()
   let newStory = {
     author: currentUser.username,
